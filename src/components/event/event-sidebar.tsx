@@ -2,12 +2,14 @@
 
 import { motion } from "framer-motion";
 import { Ticket } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/utils/format";
 
 interface EventSidebarProps {
   event: {
+    id: string;
     registration_mode: string;
     tickets: {
       id: string;
@@ -102,15 +104,17 @@ export function EventSidebar({ event }: EventSidebarProps) {
         </div>
       )}
 
-      <Button className="w-full" size="lg">
-        {event.registration_mode === "approval"
-          ? "Apply to Attend"
-          : event.registration_mode === "invite_only"
-            ? "Request Invite"
-            : hasTickets
-              ? "Get Tickets"
-              : "Register"}
-      </Button>
+      <Link href={`/checkout/${event.id}`}>
+        <Button className="w-full" size="lg">
+          {event.registration_mode === "approval"
+            ? "Apply to Attend"
+            : event.registration_mode === "invite_only"
+              ? "Request Invite"
+              : hasTickets
+                ? "Get Tickets"
+                : "Register"}
+        </Button>
+      </Link>
 
       <p className="mt-3 text-center text-xs text-muted-foreground">
         {event.registration_mode === "approval"
