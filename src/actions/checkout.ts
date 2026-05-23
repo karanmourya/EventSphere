@@ -162,5 +162,16 @@ export async function getOrder(orderId: string) {
     .select("*, tickets(name, ticket_type)")
     .eq("order_id", orderId);
 
-  return { ...order, items: items ?? [] };
+  // Get registrations for this order's event + user
+  const { data: registrations } = await supabase
+    .from("registrations")
+    .select("id, qr_code, checked_in, tickets(name, ticket_type)")
+    .eq("event_id", order.event_id)
+    .eq("user_id", user.id);
+
+  return {
+    ...order,
+    items: items ?? [],
+    registrations: registrations ?? [],
+  };
 }
