@@ -1,0 +1,40 @@
+import { notFound } from "next/navigation";
+import { getEventBySlug } from "@/actions/events";
+import { EventHero } from "@/components/event/event-hero";
+import { EventInfo } from "@/components/event/event-info";
+import { EventDescription } from "@/components/event/event-description";
+import { EventSidebar } from "@/components/event/event-sidebar";
+
+interface EventPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function EventPage({ params }: EventPageProps) {
+  const { slug } = await params;
+  const event = await getEventBySlug(slug);
+
+  if (!event) {
+    notFound();
+  }
+
+  return (
+    <div className="min-h-screen">
+      <EventHero event={event} />
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          <div className="flex flex-col gap-8 lg:col-span-2">
+            <EventInfo event={event} />
+            {event.description && (
+              <EventDescription description={event.description} />
+            )}
+          </div>
+          <div className="lg:col-span-1">
+            <div className="sticky top-24">
+              <EventSidebar event={event} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

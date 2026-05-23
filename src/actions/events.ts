@@ -100,3 +100,53 @@ export async function getCategories() {
 
   return data ?? [];
 }
+
+export async function getEventBySlug(slug: string) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("events")
+    .select("*, profiles!events_organizer_id_fkey(id, name, username, avatar_url, bio), categories(id, name, slug)")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error || !data) return null;
+
+  // Fetch tickets for this event
+  const { data: tickets } = await supabase
+    .from("tickets")
+    .select("*")
+    .eq("event_id", data.id)
+    .order("price");
+
+  return { ...data, tickets: tickets ?? [] };
+}
+
+export async function getOrganizerEvents(organizerId: string) {
+  const supabase = await createClient();
+
+  const { data } = await supabase
+    .from("events")
+    .select("*")
+    .eq("organizer_id", organizerId)
+    .order("created_at", { ascending: false });
+
+  return data ?? [];
+}
+
+export async function getDashboardEvents() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return [];
+
+  const { data } = await supabase
+    .from("events")
+    .select("*, categories(name)")
+    .eq("organizer_id", user.id)
+    .order("created_at", { ascending: false });
+
+  return data ?? [];
+}
