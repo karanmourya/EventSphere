@@ -76,7 +76,7 @@ export async function createEvent(input: CreateEventInput) {
       online_link: input.onlineLink || null,
       visibility: input.visibility,
       registration_mode: input.registrationMode,
-      status: "draft",
+      status: "published",
     })
     .select("id")
     .single();

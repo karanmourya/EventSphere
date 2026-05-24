@@ -22,19 +22,20 @@ interface EventCardProps {
       name: string;
       avatar_url: string | null;
     } | null;
-    priceRange: { min: number; max: number };
+    priceRange?: { min: number; max: number };
   };
   index?: number;
 }
 
 export function EventCard({ event, index = 0 }: EventCardProps) {
   const location = event.city;
+  const priceRange = event.priceRange ?? { min: 0, max: 0 };
   const priceLabel =
-    event.priceRange.min === 0
+    priceRange.min === 0
       ? "Free"
-      : event.priceRange.min === event.priceRange.max
-        ? formatPrice(event.priceRange.min)
-        : `From ${formatPrice(event.priceRange.min)}`;
+      : priceRange.min === priceRange.max
+        ? formatPrice(priceRange.min)
+        : `From ${formatPrice(priceRange.min)}`;
 
   return (
     <motion.div
@@ -69,7 +70,7 @@ export function EventCard({ event, index = 0 }: EventCardProps) {
           )}
           <Badge
             className="absolute top-3 right-3"
-            variant={event.priceRange.min === 0 ? "secondary" : "default"}
+            variant={priceRange.min === 0 ? "secondary" : "default"}
           >
             {priceLabel}
           </Badge>

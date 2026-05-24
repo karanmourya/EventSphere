@@ -8,9 +8,15 @@ import { Sparkles } from "lucide-react";
 interface EventSummary {
   id: string;
   title: string;
-  city: string | null;
-  category: string | null;
+  slug: string;
   short_description: string | null;
+  banner_url: string | null;
+  start_time: string;
+  timezone: string;
+  city: string | null;
+  categories: { name: string } | null;
+  profiles: { name: string; avatar_url: string | null } | null;
+  priceRange?: { min: number; max: number };
 }
 
 export function RecommendedEvents() {
@@ -55,7 +61,7 @@ export function RecommendedEvents() {
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {events.map((event, i) => (
-          <EventCard key={event.id} event={event as any} index={i} />
+          <EventCard key={event.id} event={event} index={i} />
         ))}
       </div>
     </div>
