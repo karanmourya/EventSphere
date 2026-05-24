@@ -258,3 +258,24 @@ create policy "Agenda viewable by everyone" on agenda for select using (true);
 create policy "Organizers can manage agenda" on agenda for all using (
   exists (select 1 from events where events.id = agenda.event_id and events.organizer_id = auth.uid())
 );
+
+-- 10. NOTIFICATIONS
+create table notifications (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  type text not null check (type in ('application_approved', 'application_rejected', 'application_waitlisted', 'new_application', 'event_reminder')),
+  title text not null,
+  message text not null,
+  link text,
+  read boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+alter table notifications enable row level security;
+
+create policy "Users can view own notifications" on notifications for select using (auth.uid() = user_id);
+create policy "Users can update own notifications" on notifications for update using (auth.uid() = user_id);
+create policy "Service role can insert notifications" on notifications for insert with check (true);
+
+create index idx_notifications_user_id on notifications(user_id);
+create index idx_notifications_user_read on notifications(user_id, read);

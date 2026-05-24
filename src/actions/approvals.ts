@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { createNotification } from "@/actions/notifications";
 import type { FieldType } from "@/types";
 
 // ============ Form Fields ============
@@ -165,6 +166,23 @@ export async function submitApplication(
     await supabase.from("application_answers").insert(answerInserts);
   }
 
+  // Notify organizer of new application
+  const { data: event } = await supabase
+    .from("events")
+    .select("organizer_id, title")
+    .eq("id", eventId)
+    .single();
+
+  if (event) {
+    await createNotification(
+      event.organizer_id,
+      "new_application",
+      "New application received",
+      `Someone applied for ${event.title}`,
+      `/dashboard/event/${eventId}/applications`
+    );
+  }
+
   revalidatePath(`/dashboard/event/${eventId}/applications`);
   return { success: true, applicationId: application.id };
 }
@@ -251,6 +269,41 @@ export async function reviewApplication(
       status: "approved",
     });
   }
+
+  // Notify applicant of the decision
+  const { data: eventData } = await supabase
+    .from("events")
+    .select("title")
+    .eq("id", application.event_id)
+    .single();
+
+  const statusMessages = {
+    approved: {
+      title: "Application approved!",
+      message: `Your application for ${eventData?.title ?? "the event"} has been approved. You can now get tickets.`,
+    },
+    rejected: {
+      title: "Application not accepted",
+      message: `Your application for ${eventData?.title ?? "the event"} was not accepted at this time.`,
+    },
+    waitlisted: {
+      title: "Application waitlisted",
+      message: `You've been placed on the waitlist for ${eventData?.title ?? "the event"}.`,
+    },
+  };
+
+  const statusType = `application_${status}` as
+    | "application_approved"
+    | "application_rejected"
+    | "application_waitlisted";
+
+  await createNotification(
+    application.user_id,
+    statusType,
+    statusMessages[status].title,
+    statusMessages[status].message,
+    `/apply/${application.event_id}`
+  );
 
   revalidatePath(`/dashboard/event/${application.event_id}/applications`);
   return { success: true };

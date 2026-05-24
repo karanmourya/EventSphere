@@ -36,7 +36,7 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} dark`}
     >
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <Navbar user={user} />
+        <Navbar user={user ? { id: user.id, email: user.email } : null} />
         <main className="flex-1">{children}</main>
       </body>
     </html>

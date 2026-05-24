@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { Menu, X } from "lucide-react";
 
 interface NavbarProps {
-  user: { email?: string } | null;
+  user: { id: string; email?: string } | null;
 }
 
 export function Navbar({ user }: NavbarProps) {
@@ -30,12 +31,15 @@ export function Navbar({ user }: NavbarProps) {
 
         <div className="flex items-center gap-3">
           {user ? (
-            <Link
-              href="/dashboard"
-              className={buttonVariants({ variant: "ghost", size: "sm" })}
-            >
-              Dashboard
-            </Link>
+            <>
+              <NotificationBell />
+              <Link
+                href="/dashboard"
+                className={buttonVariants({ variant: "ghost", size: "sm" })}
+              >
+                Dashboard
+              </Link>
+            </>
           ) : (
             <>
               <Link
@@ -76,13 +80,18 @@ export function Navbar({ user }: NavbarProps) {
               Explore
             </Link>
             {user ? (
-              <Link
-                href="/dashboard"
-                className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                onClick={() => setOpen(false)}
-              >
-                Dashboard
-              </Link>
+              <>
+                <Link
+                  href="/dashboard"
+                  className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                  onClick={() => setOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <div className="px-3 py-2">
+                  <NotificationBell />
+                </div>
+              </>
             ) : (
               <>
                 <Link
