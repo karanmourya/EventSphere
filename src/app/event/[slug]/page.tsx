@@ -4,6 +4,7 @@ import { EventHero } from "@/components/event/event-hero";
 import { EventInfo } from "@/components/event/event-info";
 import { EventDescription } from "@/components/event/event-description";
 import { EventSidebar } from "@/components/event/event-sidebar";
+import { EventAgenda } from "@/components/event/event-agenda";
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
@@ -27,6 +28,7 @@ export default async function EventPage({ params }: EventPageProps) {
             {event.description && (
               <EventDescription description={event.description} />
             )}
+            <EventAgenda eventId={event.id} />
           </div>
           <div className="lg:col-span-1">
             <div className="sticky top-24">

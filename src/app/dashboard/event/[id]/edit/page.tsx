@@ -2,9 +2,11 @@ import { notFound } from "next/navigation";
 import { getEventById, getEventTickets } from "@/actions/tickets";
 import { EventEditHeader } from "@/components/event/event-edit-header";
 import { TicketManager } from "@/components/event/ticket-manager";
+import { ScheduleBuilder } from "@/components/event/schedule-builder";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { ClipboardList } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 interface EditEventPageProps {
   params: Promise<{ id: string }>;
@@ -37,6 +39,17 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
       )}
 
       <TicketManager eventId={event.id} tickets={tickets} />
+
+      <Separator className="my-8" />
+
+      <ScheduleBuilder
+        eventId={event.id}
+        eventTitle={event.title}
+        startTime={event.start_time}
+        endTime={event.end_time}
+        description={event.description ?? undefined}
+        category={event.categories?.name}
+      />
     </div>
   );
 }
