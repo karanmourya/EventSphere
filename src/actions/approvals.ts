@@ -274,6 +274,37 @@ export async function getEventForForm(eventId: string) {
   return data;
 }
 
+export async function getMyApplication(eventId: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  const { data } = await supabase
+    .from("event_applications")
+    .select("id, status, submitted_at")
+    .eq("event_id", eventId)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  return data;
+}
+
+export async function getEventForApplication(eventId: string) {
+  const supabase = await createClient();
+
+  const { data } = await supabase
+    .from("events")
+    .select("*, categories(name)")
+    .eq("id", eventId)
+    .eq("registration_mode", "approval")
+    .single();
+
+  return data;
+}
+
 export async function getApplicationFormFields(eventId: string) {
   const supabase = await createClient();
 

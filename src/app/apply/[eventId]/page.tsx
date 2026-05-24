@@ -1,6 +1,11 @@
 import { notFound } from "next/navigation";
-import { getEventForForm, getApplicationFormFields } from "@/actions/approvals";
+import {
+  getEventForApplication,
+  getApplicationFormFields,
+  getMyApplication,
+} from "@/actions/approvals";
 import { ApplicationForm } from "@/components/forms/application-form";
+import { ApplicationStatus } from "@/components/forms/application-status";
 
 interface ApplyPageProps {
   params: Promise<{ eventId: string }>;
@@ -8,13 +13,16 @@ interface ApplyPageProps {
 
 export default async function ApplyPage({ params }: ApplyPageProps) {
   const { eventId } = await params;
-  const event = await getEventForForm(eventId);
+  const event = await getEventForApplication(eventId);
 
-  if (!event || event.registration_mode !== "approval") {
+  if (!event) {
     notFound();
   }
 
-  const fields = await getApplicationFormFields(eventId);
+  const [fields, existing] = await Promise.all([
+    getApplicationFormFields(eventId),
+    getMyApplication(eventId),
+  ]);
 
   if (fields.length === 0) {
     return (
@@ -25,6 +33,18 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
             The organizer hasn&apos;t set up an application form yet.
           </p>
         </div>
+      </div>
+    );
+  }
+
+  if (existing) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-12">
+        <ApplicationStatus
+          eventTitle={event.title}
+          status={existing.status}
+          submittedAt={existing.submitted_at}
+        />
       </div>
     );
   }
