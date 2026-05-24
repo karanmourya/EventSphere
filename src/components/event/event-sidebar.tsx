@@ -104,17 +104,23 @@ export function EventSidebar({ event }: EventSidebarProps) {
         </div>
       )}
 
-      <Link href={event.registration_mode === "approval" ? `/apply/${event.id}` : `/checkout/${event.id}`}>
-        <Button className="w-full" size="lg">
-          {event.registration_mode === "approval"
-            ? "Apply to Attend"
-            : event.registration_mode === "invite_only"
-              ? "Request Invite"
-              : hasTickets
-                ? "Get Tickets"
-                : "Register"}
+      {totalRemaining === 0 && hasTickets ? (
+        <Button className="w-full" size="lg" disabled>
+          Sold Out
         </Button>
-      </Link>
+      ) : (
+        <Link href={event.registration_mode === "approval" ? `/apply/${event.id}` : `/checkout/${event.id}`}>
+          <Button className="w-full" size="lg">
+            {event.registration_mode === "approval"
+              ? "Apply to Attend"
+              : event.registration_mode === "invite_only"
+                ? "Request Invite"
+                : hasTickets
+                  ? "Get Tickets"
+                  : "Register"}
+          </Button>
+        </Link>
+      )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">
         {event.registration_mode === "approval"

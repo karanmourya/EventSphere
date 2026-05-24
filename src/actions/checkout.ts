@@ -136,7 +136,6 @@ export async function getCheckoutEvent(eventId: string) {
     .from("tickets")
     .select("*")
     .eq("event_id", eventId)
-    .gt("remaining_quantity", 0)
     .order("price");
 
   return { ...event, tickets: tickets ?? [] };

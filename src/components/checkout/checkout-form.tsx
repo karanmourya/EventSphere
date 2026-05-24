@@ -82,7 +82,11 @@ export function CheckoutForm({ eventId, tickets }: CheckoutFormProps) {
                     </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {ticket.remaining_quantity} remaining
+                    {ticket.remaining_quantity === 0 ? (
+                      <span className="text-destructive font-medium">Sold out</span>
+                    ) : (
+                      `${ticket.remaining_quantity} remaining`
+                    )}
                   </p>
                 </div>
               </div>
