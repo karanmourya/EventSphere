@@ -27,7 +27,14 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
       <EventEditHeader event={event} />
 
       {event.registration_mode === "approval" && (
-        <div className="mb-6">
+        <div className="mb-6 flex gap-2">
+          <Link
+            href={`/dashboard/event/${id}/forms`}
+            className={buttonVariants({ variant: "outline", size: "sm" })}
+          >
+            <ClipboardList className="mr-1 size-4" />
+            Edit Application Form
+          </Link>
           <Link
             href={`/dashboard/event/${id}/applications`}
             className={buttonVariants({ variant: "outline", size: "sm" })}
