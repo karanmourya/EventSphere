@@ -5,6 +5,7 @@ import {
 } from "@/actions/explore";
 import { EventCard } from "@/components/event/event-card";
 import { ExploreFilters } from "@/components/event/explore-filters";
+import { RecommendedEvents } from "@/components/event/recommended-events";
 import { CalendarDays } from "lucide-react";
 
 interface ExplorePageProps {
@@ -31,6 +32,8 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
     getExploreCities(),
   ]);
 
+  const hasFilters = params.search || params.category || params.city || params.price;
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8">
@@ -39,6 +42,8 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
           Discover events happening around you
         </p>
       </div>
+
+      {!hasFilters && <RecommendedEvents />}
 
       <div className="mb-8">
         <ExploreFilters categories={categories} cities={cities} />
