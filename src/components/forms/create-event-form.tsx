@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { createEvent } from "@/actions/events";
+import { generateDescription } from "@/actions/ai";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,6 +22,7 @@ import {
   FieldError,
   FieldSeparator,
 } from "@/components/ui/field";
+import { Sparkles, Loader2 } from "lucide-react";
 import type { EventVisibility, RegistrationMode } from "@/types";
 
 interface Category {
@@ -36,6 +38,30 @@ interface CreateEventFormProps {
 export function CreateEventForm({ categories }: CreateEventFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  async function handleGenerateDescription() {
+    if (!title.trim()) {
+      setError("Enter a title first so AI has something to work with.");
+      return;
+    }
+    setIsGenerating(true);
+    setError(null);
+    const result = await generateDescription({
+      title,
+      category: categories.find((c) => c.id === categoryId)?.name,
+      city,
+      venue,
+      startTime,
+      endTime,
+    });
+    setIsGenerating(false);
+    if (result.error) {
+      setError(result.error);
+    } else if (result.description) {
+      setDescription(result.description);
+    }
+  }
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
@@ -133,9 +159,25 @@ export function CreateEventForm({ categories }: CreateEventFormProps) {
             />
           </Field>
           <Field>
-            <FieldLabel htmlFor="description">
-              Full Description
-            </FieldLabel>
+            <div className="flex items-center justify-between">
+              <FieldLabel htmlFor="description">
+                Full Description
+              </FieldLabel>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleGenerateDescription}
+                disabled={isGenerating}
+              >
+                {isGenerating ? (
+                  <Loader2 className="mr-1 size-3.5 animate-spin" />
+                ) : (
+                  <Sparkles className="mr-1 size-3.5" />
+                )}
+                {isGenerating ? "Generating..." : "Generate with AI"}
+              </Button>
+            </div>
             <Textarea
               id="description"
               placeholder="Tell attendees what to expect..."
