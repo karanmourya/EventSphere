@@ -5,7 +5,7 @@ export function formatDate(dateStr: string, timezone?: string): string {
     month: "long",
     day: "numeric",
     year: "numeric",
-    timeZone: timezone,
+    timeZone: timezone || "Asia/Kolkata",
   });
 }
 
@@ -14,7 +14,7 @@ export function formatTime(dateStr: string, timezone?: string): string {
   return date.toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
-    timeZone: timezone,
+    timeZone: timezone || "Asia/Kolkata",
   });
 }
 
