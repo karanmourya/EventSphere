@@ -5,10 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   CalendarDays,
   LayoutDashboard,
-  Settings,
   Ticket,
-  ClipboardCheck,
-  Star,
   ShoppingCart,
 } from "lucide-react";
 import {
@@ -46,16 +43,6 @@ const navItems = [
     href: "/dashboard/orders",
     icon: ShoppingCart,
   },
-  {
-    label: "Check-in",
-    href: "/dashboard/checkin",
-    icon: ClipboardCheck,
-  },
-  {
-    label: "Reviews",
-    href: "/dashboard/reviews",
-    icon: Star,
-  },
 ];
 
 export function DashboardSidebar() {
@@ -92,14 +79,9 @@ export function DashboardSidebar() {
       </SidebarContent>
       <SidebarSeparator />
       <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton render={<Link href="/dashboard/settings" />} tooltip="Settings">
-              <Settings />
-              <span>Settings</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <div className="px-2 py-2 text-xs text-muted-foreground">
+          EventSphere
+        </div>
       </SidebarFooter>
     </Sidebar>
   );
