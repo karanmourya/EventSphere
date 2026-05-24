@@ -42,6 +42,7 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
       <div className="mx-auto max-w-2xl px-4 py-12">
         <ApplicationStatus
           eventTitle={event.title}
+          eventId={event.id}
           status={existing.status}
           submittedAt={existing.submitted_at}
         />

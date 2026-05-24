@@ -1,10 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, Clock, Loader2 } from "lucide-react";
 
 interface ApplicationStatusProps {
   eventTitle: string;
+  eventId: string;
   status: string;
   submittedAt: string;
 }
@@ -45,6 +48,7 @@ const STATUS_CONFIG: Record<
 
 export function ApplicationStatus({
   eventTitle,
+  eventId,
   status,
   submittedAt,
 }: ApplicationStatusProps) {
@@ -64,6 +68,13 @@ export function ApplicationStatus({
       <p className="mt-4 max-w-sm text-sm text-muted-foreground">
         {config.description}
       </p>
+      {status === "approved" && (
+        <Link href={`/checkout/${eventId}`}>
+          <Button className="mt-6" size="lg">
+            Get Tickets
+          </Button>
+        </Link>
+      )}
       <p className="mt-2 text-xs text-muted-foreground">
         Submitted on {new Date(submittedAt).toLocaleDateString()}
       </p>
