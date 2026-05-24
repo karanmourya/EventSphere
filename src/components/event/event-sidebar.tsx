@@ -104,7 +104,7 @@ export function EventSidebar({ event }: EventSidebarProps) {
         </div>
       )}
 
-      <Link href={`/checkout/${event.id}`}>
+      <Link href={event.registration_mode === "approval" ? `/apply/${event.id}` : `/checkout/${event.id}`}>
         <Button className="w-full" size="lg">
           {event.registration_mode === "approval"
             ? "Apply to Attend"
