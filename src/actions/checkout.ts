@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -106,8 +107,9 @@ export async function createOrder(
       });
     }
 
-    // Decrement remaining quantity
-    await supabase
+    // Decrement remaining quantity (admin client bypasses RLS)
+    const admin = createAdminClient();
+    await admin
       .from("tickets")
       .update({
         remaining_quantity: ticket.remaining_quantity - sel.quantity,
