@@ -8,138 +8,191 @@ import {
   Zap,
   Shield,
   ArrowRight,
+  Check,
 } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="relative overflow-hidden">
-      {/* Gradient mesh background */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-[40%] left-1/2 h-[800px] w-[800px] -translate-x-1/2 rounded-full bg-primary/20 blur-[128px]" />
-        <div className="absolute -bottom-[20%] -left-[20%] h-[600px] w-[600px] rounded-full bg-chart-2/10 blur-[128px]" />
-        <div className="absolute -right-[10%] top-[20%] h-[400px] w-[400px] rounded-full bg-chart-3/10 blur-[128px]" />
-      </div>
-
+    <div>
       {/* Hero */}
-      <section className="relative mx-auto max-w-7xl px-4 pb-20 pt-24 sm:px-6 sm:pt-32 lg:px-8 lg:pt-40">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
-            <Sparkles className="size-3.5" />
-            AI-Native Event Platform
-          </div>
+      <section className="mx-auto max-w-[1200px] px-4 pb-24 pt-24 sm:px-6 lg:px-8 lg:pt-32">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
+          {/* Left — copy */}
+          <div className="lg:col-span-7">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3.5 py-1.5 text-xs font-medium text-muted-foreground">
+              <Sparkles className="size-3.5" />
+              AI-Native Event Platform
+            </div>
 
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-            <span className="block">Events that</span>
-            <span className="block bg-gradient-to-r from-primary via-chart-2 to-chart-3 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-[64px]" style={{ lineHeight: "1.05", letterSpacing: "-2px" }}>
+              Events that
+              <br />
               run themselves
-            </span>
-          </h1>
+            </h1>
 
-          <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground sm:text-xl">
-            Create, manage, and scale events with AI-powered tools. From
-            ticketing to check-in, EventSphere handles the operations so you
-            can focus on the experience.
-          </p>
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-foreground/70">
+              Create, manage, and scale events with AI-powered tools. From
+              ticketing to check-in, EventSphere handles the operations so you
+              can focus on the experience.
+            </p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/signup"
-              className={buttonVariants({ size: "lg" }) + " gap-2 px-8"}
-            >
-              Start for free
-              <ArrowRight className="size-4" />
-            </Link>
-            <Link
-              href="/explore"
-              className={buttonVariants({ variant: "outline", size: "lg" }) + " px-8"}
-            >
-              Explore events
-            </Link>
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Link
+                href="/signup"
+                className={buttonVariants({ size: "lg" }) +
+                  " h-10 gap-2 rounded-lg px-5 text-sm font-semibold"}
+              >
+                Start for free
+                <ArrowRight className="size-4" />
+              </Link>
+              <Link
+                href="/explore"
+                className={buttonVariants({ variant: "outline", size: "lg" }) +
+                  " h-10 rounded-lg px-5 text-sm font-semibold"}
+              >
+                Explore events
+              </Link>
+            </div>
+
+            <p className="mt-4 text-xs text-muted-foreground/60">
+              No credit card required · Free for up to 100 attendees
+            </p>
           </div>
 
-          <p className="mt-4 text-xs text-muted-foreground">
-            No credit card required · Free for up to 100 attendees
-          </p>
-        </div>
-
-        {/* Hero visual — mock dashboard */}
-        <div className="relative mx-auto mt-16 max-w-4xl">
-          <div className="rounded-xl border border-border/50 bg-card/80 p-1 shadow-2xl backdrop-blur">
-            <div className="flex items-center gap-2 border-b border-border/50 px-4 py-3">
-              <div className="size-2.5 rounded-full bg-destructive/60" />
-              <div className="size-2.5 rounded-full bg-chart-4/60" />
-              <div className="size-2.5 rounded-full bg-chart-3/60" />
-              <span className="ml-3 text-xs text-muted-foreground">
-                eventsphere.dev/dashboard
-              </span>
-            </div>
-            <div className="grid grid-cols-3 gap-4 p-6">
-              <div className="flex flex-col gap-2 rounded-lg bg-secondary/50 p-4">
-                <div className="text-xs text-muted-foreground">Total Events</div>
-                <div className="text-2xl font-bold">24</div>
-                <div className="h-1.5 w-full rounded-full bg-primary/20">
-                  <div className="h-1.5 w-3/4 rounded-full bg-primary" />
+          {/* Right — product mockup card */}
+          <div className="lg:col-span-5">
+            <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08)]">
+              {/* Mock browser chrome */}
+              <div className="flex items-center gap-2 border-b border-border px-4 py-3">
+                <div className="size-2.5 rounded-full bg-red-400 opacity-60" />
+                <div className="size-2.5 rounded-full bg-amber-400 opacity-60" />
+                <div className="size-2.5 rounded-full bg-emerald-400 opacity-60" />
+                <span className="ml-3 text-xs text-muted-foreground">
+                  eventsphere.dev/dashboard
+                </span>
+              </div>
+              {/* Mock dashboard content */}
+              <div className="grid grid-cols-3 gap-3 p-5">
+                <div className="flex flex-col gap-1.5 rounded-lg bg-background p-3.5">
+                  <div className="text-[11px] text-muted-foreground">
+                    Total Events
+                  </div>
+                  <div className="text-xl font-semibold text-foreground">
+                    24
+                  </div>
+                  <div className="h-1 w-full rounded-full bg-muted">
+                    <div className="h-1 w-3/4 rounded-full bg-primary" />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1.5 rounded-lg bg-background p-3.5">
+                  <div className="text-[11px] text-muted-foreground">
+                    Registrations
+                  </div>
+                  <div className="text-xl font-semibold text-foreground">
+                    1,847
+                  </div>
+                  <div className="h-1 w-full rounded-full bg-muted">
+                    <div className="h-1 w-5/6 rounded-full bg-emerald-500" />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1.5 rounded-lg bg-background p-3.5">
+                  <div className="text-[11px] text-muted-foreground">
+                    Revenue
+                  </div>
+                  <div className="text-xl font-semibold text-foreground">
+                    ₹2.4L
+                  </div>
+                  <div className="h-1 w-full rounded-full bg-muted">
+                    <div className="h-1 w-2/3 rounded-full bg-blue-500" />
+                  </div>
                 </div>
               </div>
-              <div className="flex flex-col gap-2 rounded-lg bg-secondary/50 p-4">
-                <div className="text-xs text-muted-foreground">Registrations</div>
-                <div className="text-2xl font-bold">1,847</div>
-                <div className="h-1.5 w-full rounded-full bg-chart-2/20">
-                  <div className="h-1.5 w-5/6 rounded-full bg-chart-2" />
+              {/* Mock event list */}
+              <div className="border-t border-border px-5 py-3">
+                <div className="flex items-center justify-between py-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex size-8 items-center justify-center rounded-md bg-violet-100">
+                      <CalendarDays className="size-4 text-violet-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-foreground">
+                        DevConf 2026
+                      </p>
+                      <p className="text-[10px] text-muted-foreground">
+                        Jun 15 · Bangalore
+                      </p>
+                    </div>
+                  </div>
+                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-700">
+                    Live
+                  </span>
                 </div>
-              </div>
-              <div className="flex flex-col gap-2 rounded-lg bg-secondary/50 p-4">
-                <div className="text-xs text-muted-foreground">Revenue</div>
-                <div className="text-2xl font-bold">₹2.4L</div>
-                <div className="h-1.5 w-full rounded-full bg-chart-3/20">
-                  <div className="h-1.5 w-2/3 rounded-full bg-chart-3" />
+                <div className="flex items-center justify-between py-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex size-8 items-center justify-center rounded-md bg-amber-100">
+                      <CalendarDays className="size-4 text-amber-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-foreground">
+                        Design Sprint
+                      </p>
+                      <p className="text-[10px] text-muted-foreground">
+                        Jul 3 · Mumbai
+                      </p>
+                    </div>
+                  </div>
+                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700">
+                    Draft
+                  </span>
                 </div>
               </div>
             </div>
           </div>
-          {/* Glow under the card */}
-          <div className="absolute -bottom-8 left-1/2 h-32 w-3/4 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
         </div>
       </section>
 
       {/* Features */}
-      <section className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Everything you need to run events
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            One platform for the entire event lifecycle — from planning to
-            post-event analytics.
-          </p>
-        </div>
+      <section className="bg-card">
+        <div className="mx-auto max-w-[1200px] px-4 py-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl" style={{ letterSpacing: "-1px" }}>
+              Everything you need to run events
+            </h2>
+            <p className="mt-4 text-foreground/70">
+              One platform for the entire event lifecycle — from planning to
+              post-event analytics.
+            </p>
+          </div>
 
-        <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature, i) => (
-            <div
-              key={i}
-              className="group relative rounded-xl border border-border/50 bg-card/50 p-6 transition-colors hover:border-primary/30 hover:bg-card"
-            >
-              <div className="mb-4 inline-flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
-                <feature.icon className="size-5" />
+          <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature, i) => (
+              <div
+                key={i}
+                className="rounded-xl bg-background p-8 transition-shadow hover:shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08)]"
+              >
+                <div className="mb-5 inline-flex size-10 items-center justify-center rounded-lg bg-card text-foreground">
+                  <feature.icon className="size-5" />
+                </div>
+                <h3 className="mb-2 text-base font-semibold text-foreground">
+                  {feature.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-foreground/70">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="mb-2 font-semibold">{feature.title}</h3>
-              <p className="text-sm text-muted-foreground">
-                {feature.description}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* How it works */}
-      <section className="relative border-y border-border/50 bg-card/30">
-        <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <section className="bg-background">
+        <div className="mx-auto max-w-[1200px] px-4 py-24 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl" style={{ letterSpacing: "-1px" }}>
               Three steps. That&apos;s it.
             </h2>
-            <p className="mt-4 text-muted-foreground">
+            <p className="mt-4 text-foreground/70">
               Go from zero to a live event in minutes, not days.
             </p>
           </div>
@@ -147,11 +200,13 @@ export default function Home() {
           <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-8 sm:grid-cols-3">
             {steps.map((step, i) => (
               <div key={i} className="relative text-center">
-                <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-lg font-bold text-primary">
+                <div className="mx-auto mb-5 flex size-12 items-center justify-center rounded-full bg-primary text-lg font-semibold text-primary-foreground">
                   {i + 1}
                 </div>
-                <h3 className="mb-2 font-semibold">{step.title}</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="mb-2 text-base font-semibold text-foreground">
+                  {step.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-foreground/70">
                   {step.description}
                 </p>
                 {i < steps.length - 1 && (
@@ -163,48 +218,133 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div className="relative mx-auto max-w-2xl overflow-hidden rounded-2xl border border-primary/20 bg-card p-12 text-center">
-          <div className="pointer-events-none absolute -top-20 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/20 blur-[80px]" />
-          <h2 className="relative text-3xl font-bold tracking-tight">
-            Ready to launch your next event?
-          </h2>
-          <p className="relative mt-4 text-muted-foreground">
-            Join thousands of organizers using EventSphere to create
-            unforgettable experiences.
-          </p>
-          <div className="relative mt-8">
-            <Link
-              href="/signup"
-              className={buttonVariants({ size: "lg" }) + " gap-2 px-8"}
-            >
-              Get started — it&apos;s free
-              <ArrowRight className="size-4" />
-            </Link>
+      {/* Feature checklist */}
+      <section className="bg-card">
+        <div className="mx-auto max-w-[1200px] px-4 py-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl" style={{ letterSpacing: "-1px" }}>
+              Built for modern organizers
+            </h2>
+            <p className="mt-4 text-foreground/70">
+              Every feature designed to save you time and delight your attendees.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
+            {benefits.map((benefit, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+                  <Check className="size-3 text-emerald-600" />
+                </div>
+                <p className="text-sm text-foreground/70">{benefit}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border/50 bg-card/30">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row sm:px-6 lg:px-8">
-          <p className="text-sm text-muted-foreground">
-            &copy; 2026 EventSphere. All rights reserved.
-          </p>
-          <div className="flex gap-6">
-            <Link
-              href="/explore"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Explore
-            </Link>
-            <Link
-              href="/login"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Sign in
-            </Link>
+      {/* CTA band */}
+      <section className="bg-background">
+        <div className="mx-auto max-w-[1200px] px-4 py-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl rounded-2xl bg-card p-12 text-center">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl" style={{ letterSpacing: "-0.5px" }}>
+              Ready to launch your next event?
+            </h2>
+            <p className="mt-4 text-foreground/70">
+              Join thousands of organizers using EventSphere to create
+              unforgettable experiences.
+            </p>
+            <div className="mt-8">
+              <Link
+                href="/signup"
+                className={buttonVariants({ size: "lg" }) +
+                  " h-10 gap-2 rounded-lg px-5 text-sm font-semibold"}
+              >
+                Get started — it&apos;s free
+                <ArrowRight className="size-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer — dark */}
+      <footer className="bg-[#101010]">
+        <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+            <div className="col-span-2 sm:col-span-1">
+              <p className="text-base font-semibold text-white">EventSphere</p>
+              <p className="mt-3 text-sm leading-relaxed text-[#a1a1aa]">
+                The AI-native event platform for communities, hackathons, and
+                creators.
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wider text-[#a1a1aa]">
+                Product
+              </p>
+              <ul className="mt-3 flex flex-col gap-2">
+                <li>
+                  <Link
+                    href="/explore"
+                    className="text-sm text-[#a1a1aa] transition-colors hover:text-white"
+                  >
+                    Explore Events
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/signup"
+                    className="text-sm text-[#a1a1aa] transition-colors hover:text-white"
+                  >
+                    Get Started
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wider text-[#a1a1aa]">
+                Platform
+              </p>
+              <ul className="mt-3 flex flex-col gap-2">
+                <li>
+                  <Link
+                    href="/dashboard"
+                    className="text-sm text-[#a1a1aa] transition-colors hover:text-white"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/login"
+                    className="text-sm text-[#a1a1aa] transition-colors hover:text-white"
+                  >
+                    Sign In
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wider text-[#a1a1aa]">
+                Legal
+              </p>
+              <ul className="mt-3 flex flex-col gap-2">
+                <li>
+                  <span className="text-sm text-[#a1a1aa]">Privacy Policy</span>
+                </li>
+                <li>
+                  <span className="text-sm text-[#a1a1aa]">
+                    Terms of Service
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-12 border-t border-[#1a1a1a] pt-6">
+            <p className="text-xs text-[#a1a1aa]">
+              &copy; 2026 EventSphere. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
@@ -267,4 +407,15 @@ const steps = [
     description:
       "QR check-in, real-time dashboards, and AI-powered scheduling keep everything on track.",
   },
+];
+
+const benefits = [
+  "AI-generated event descriptions and schedules",
+  "Instant QR code ticketing with check-in",
+  "Custom application forms and approval workflows",
+  "Real-time analytics and attendee management",
+  "Multiple ticket tiers with inventory tracking",
+  "Organizer dashboard with full event control",
+  "Mobile-responsive event pages",
+  "Free for up to 100 attendees",
 ];

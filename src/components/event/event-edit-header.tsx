@@ -22,7 +22,7 @@ export function EventEditHeader({ event }: EventEditHeaderProps) {
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight">
+            <h1 className="text-2xl font-semibold tracking-tight text-[var(--ink)]">
               {event.title}
             </h1>
             <Badge
@@ -31,7 +31,7 @@ export function EventEditHeader({ event }: EventEditHeaderProps) {
               {event.status}
             </Badge>
           </div>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-[var(--body)]">
             {formatDate(event.start_time, event.timezone)}
             {event.categories?.name && ` · ${event.categories.name}`}
           </p>

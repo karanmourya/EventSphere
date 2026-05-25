@@ -28,8 +28,10 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-semibold">No Application Form</h1>
-          <p className="mt-2 text-muted-foreground">
+          <h1 className="text-2xl font-semibold text-[var(--ink)]">
+            No Application Form
+          </h1>
+          <p className="mt-2 text-[var(--body)]">
             The organizer hasn&apos;t set up an application form yet.
           </p>
         </div>
@@ -53,10 +55,10 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="text-2xl font-semibold tracking-tight text-[var(--ink)]">
           Apply for {event.title}
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1 text-sm text-[var(--body)]">
           Fill out the application below. The organizer will review your
           submission.
         </p>

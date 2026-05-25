@@ -195,21 +195,3 @@ export interface Notification {
   read: boolean;
   created_at: string;
 }
-
-export type NotificationType =
-  | "application_approved"
-  | "application_rejected"
-  | "application_waitlisted"
-  | "new_application"
-  | "event_reminder";
-
-export interface Notification {
-  id: string;
-  user_id: string;
-  type: NotificationType;
-  title: string;
-  message: string;
-  link: string | null;
-  read: boolean;
-  created_at: string;
-}

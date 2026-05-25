@@ -7,10 +7,10 @@ export default async function CreateEventPage() {
   return (
     <div className="mx-auto max-w-2xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="text-2xl font-semibold tracking-tight text-[var(--ink)]">
           Create Event
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1 text-sm text-[var(--body)]">
           Fill in the details to create your event.
         </p>
       </div>

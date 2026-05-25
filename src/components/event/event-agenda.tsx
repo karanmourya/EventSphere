@@ -31,8 +31,8 @@ export function EventAgenda({ eventId }: EventAgendaProps) {
   if (loading || items.length === 0) return null;
 
   return (
-    <div className="rounded-xl border bg-card p-6">
-      <h3 className="mb-4 text-lg font-semibold">Schedule</h3>
+    <div className="rounded-xl border border bg-card p-6">
+      <h3 className="mb-4 text-lg font-semibold text-foreground">Schedule</h3>
       <div className="flex flex-col gap-3">
         {items.map((item) => (
           <div key={item.id} className="flex gap-3">

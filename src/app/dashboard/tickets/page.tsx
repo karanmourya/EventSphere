@@ -8,18 +8,18 @@ export default async function DashboardTicketsPage() {
 
   return (
     <div>
-      <h1 className="mb-1 text-2xl font-semibold tracking-tight">
+      <h1 className="mb-1 text-2xl font-semibold tracking-tight text-[var(--ink)]">
         My Tickets
       </h1>
-      <p className="mb-6 text-sm text-muted-foreground">
+      <p className="mb-6 text-sm text-[var(--body)]">
         Your event tickets and QR codes
       </p>
 
       {registrations.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16">
-          <Ticket className="mb-3 size-8 text-muted-foreground" />
-          <p className="text-muted-foreground">No tickets yet</p>
-          <p className="text-sm text-muted-foreground">
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--hairline)] py-16">
+          <Ticket className="mb-3 size-8 text-[var(--muted-soft)]" />
+          <p className="text-[var(--body)]">No tickets yet</p>
+          <p className="text-sm text-[var(--muted-text)]">
             Your tickets will appear here after registration.
           </p>
         </div>

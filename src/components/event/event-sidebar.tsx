@@ -54,7 +54,7 @@ export function EventSidebar({ event }: EventSidebarProps) {
           {event.tickets.map((ticket) => (
             <div
               key={ticket.id}
-              className="flex items-center justify-between rounded-lg border p-3"
+              className="flex items-center justify-between rounded-lg border bg-background p-3"
             >
               <div className="flex items-center gap-2">
                 <Ticket className="size-4 text-muted-foreground" />

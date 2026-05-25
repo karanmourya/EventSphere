@@ -65,9 +65,9 @@ export function ApplicationsList({
 
   if (applications.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16">
-        <p className="text-muted-foreground">No applications yet</p>
-        <p className="text-sm text-muted-foreground">
+      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--hairline)] py-16">
+        <p className="text-[var(--body)]">No applications yet</p>
+        <p className="text-sm text-[var(--muted-text)]">
           Applications will appear here when attendees apply.
         </p>
       </div>

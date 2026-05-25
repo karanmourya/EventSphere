@@ -17,7 +17,7 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
   }
 
   const totalRemaining = event.tickets.reduce(
-    (sum, t) => sum + t.remaining_quantity,
+    (sum: number, t: { remaining_quantity: number }) => sum + t.remaining_quantity,
     0
   );
 
@@ -25,8 +25,10 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6">
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">Sold Out</h1>
-          <p className="mt-2 text-muted-foreground">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+            Sold Out
+          </h1>
+          <p className="mt-2 text-foreground/70">
             All tickets for {event.title} have been sold.
           </p>
           <Link
@@ -43,10 +45,10 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           Get Tickets
         </h1>
-        <p className="mt-1 text-muted-foreground">{event.title}</p>
+        <p className="mt-1 text-foreground/70">{event.title}</p>
       </div>
       <CheckoutForm eventId={event.id} tickets={event.tickets} />
     </div>

@@ -25,4 +25,6 @@ export type {
   ApplicationAnswer,
   Speaker,
   Agenda,
+  NotificationType,
+  Notification,
 } from "./database";

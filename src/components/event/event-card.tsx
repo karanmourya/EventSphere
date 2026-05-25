@@ -12,7 +12,7 @@ interface EventCardProps {
     id: string;
     title: string;
     slug: string;
-    short_description: string;
+    short_description: string | null;
     banner_url: string | null;
     start_time: string;
     timezone: string;
@@ -45,7 +45,7 @@ export function EventCard({ event, index = 0 }: EventCardProps) {
     >
       <Link
         href={`/event/${event.slug}`}
-        className="group flex flex-col overflow-hidden rounded-xl border bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
+        className="group flex flex-col overflow-hidden rounded-xl border border-[var(--hairline)] bg-[var(--canvas)] transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
       >
         {/* Banner */}
         <div className="relative aspect-[16/9] overflow-hidden">
@@ -56,8 +56,8 @@ export function EventCard({ event, index = 0 }: EventCardProps) {
               className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <div className="flex size-full items-center justify-center bg-gradient-to-br from-primary/20 via-card to-muted">
-              <CalendarDays className="size-10 text-muted-foreground/50" />
+            <div className="flex size-full items-center justify-center bg-[var(--surface-card)]">
+              <CalendarDays className="size-10 text-[var(--muted-soft)]" />
             </div>
           )}
           {event.categories && (
@@ -78,13 +78,13 @@ export function EventCard({ event, index = 0 }: EventCardProps) {
 
         {/* Content */}
         <div className="flex flex-1 flex-col gap-2.5 p-4">
-          <h3 className="line-clamp-1 font-semibold leading-tight tracking-tight group-hover:text-primary transition-colors">
+          <h3 className="line-clamp-1 font-semibold leading-tight tracking-tight text-[var(--ink)] transition-colors group-hover:text-[var(--brand-accent)]">
             {event.title}
           </h3>
-          <p className="line-clamp-2 text-sm text-muted-foreground">
-            {event.short_description}
+          <p className="line-clamp-2 text-sm text-[var(--body)]">
+            {event.short_description ?? ""}
           </p>
-          <div className="mt-auto flex items-center gap-3 pt-2 text-xs text-muted-foreground">
+          <div className="mt-auto flex items-center gap-3 pt-2 text-xs text-[var(--muted-text)]">
             <div className="flex items-center gap-1.5">
               <CalendarDays className="size-3.5" />
               <span>
@@ -103,7 +103,7 @@ export function EventCard({ event, index = 0 }: EventCardProps) {
             )}
           </div>
           {event.profiles && (
-            <div className="flex items-center gap-2 border-t pt-2.5">
+            <div className="flex items-center gap-2 border-t border-[var(--hairline-soft)] pt-2.5">
               <Avatar size="sm">
                 {event.profiles.avatar_url && (
                   <AvatarImage src={event.profiles.avatar_url} />
@@ -112,7 +112,7 @@ export function EventCard({ event, index = 0 }: EventCardProps) {
                   {event.profiles.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-[var(--muted-text)]">
                 {event.profiles.name}
               </span>
             </div>

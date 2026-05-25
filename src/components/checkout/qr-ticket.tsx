@@ -32,12 +32,12 @@ export function QRTicket({ qrCode, event, ticket }: QRTicketProps) {
       QRCode.toCanvas(canvasRef.current, qrCode, {
         width: 200,
         margin: 2,
-        color: { dark: "#F9FAFB", light: "#111827" },
+        color: { dark: "#111111", light: "#ffffff" },
       });
       QRCode.toDataURL(qrCode, {
         width: 600,
         margin: 2,
-        color: { dark: "#1E293B", light: "#FFFFFF" },
+        color: { dark: "#111111", light: "#ffffff" },
       }).then(setDataUrl);
     }
   }, [qrCode]);
@@ -54,7 +54,7 @@ export function QRTicket({ qrCode, event, ticket }: QRTicketProps) {
   const location = [event.venue, event.city].filter(Boolean).join(", ");
 
   return (
-    <div className="rounded-xl border bg-card p-5">
+    <div className="rounded-xl border border bg-card p-5">
       <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
         <canvas
           ref={canvasRef}

@@ -80,7 +80,7 @@ export function DashboardSidebar() {
       <SidebarSeparator />
       <SidebarFooter>
         <div className="px-2 py-2 text-xs text-muted-foreground">
-          EventSphere
+          EventSphere v1.0
         </div>
       </SidebarFooter>
     </Sidebar>

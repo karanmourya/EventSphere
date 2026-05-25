@@ -12,8 +12,10 @@ export default async function DashboardEventsPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Events</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--ink)]">
+            Events
+          </h1>
+          <p className="mt-1 text-sm text-[var(--body)]">
             Manage your events
           </p>
         </div>
@@ -27,11 +29,15 @@ export default async function DashboardEventsPage() {
       </div>
 
       {events.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16">
-          <p className="text-muted-foreground">No events yet</p>
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--hairline)] py-16">
+          <p className="text-[var(--body)]">No events yet</p>
           <Link
             href="/dashboard/event/create"
-            className={buttonVariants({ variant: "outline", size: "sm", className: "mt-4" })}
+            className={buttonVariants({
+              variant: "outline",
+              size: "sm",
+              className: "mt-4",
+            })}
           >
             Create your first event
           </Link>
@@ -42,11 +48,13 @@ export default async function DashboardEventsPage() {
             <Link
               key={event.id}
               href={`/dashboard/event/${event.id}/edit`}
-              className="flex items-center justify-between rounded-xl border bg-card p-4 transition-colors hover:bg-accent"
+              className="flex items-center justify-between rounded-xl border border-[var(--hairline)] bg-[var(--canvas)] p-4 transition-colors hover:bg-[var(--surface-card)]"
             >
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-medium">{event.title}</h3>
+                  <h3 className="font-medium text-[var(--ink)]">
+                    {event.title}
+                  </h3>
                   <Badge
                     variant={
                       event.status === "published" ? "default" : "secondary"
@@ -55,12 +63,12 @@ export default async function DashboardEventsPage() {
                     {event.status}
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-[var(--body)]">
                   {formatDate(event.start_time, event.timezone)}
                   {event.categories?.name && ` · ${event.categories.name}`}
                 </p>
               </div>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-[var(--muted-text)]">
                 /event/{event.slug}
               </span>
             </Link>

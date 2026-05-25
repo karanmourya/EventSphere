@@ -35,7 +35,7 @@ export function EventHero({ event }: EventHeroProps) {
           className="absolute inset-0 size-full object-cover"
         />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-card to-background" />
+        <div className="absolute inset-0 bg-gradient-to-br from-muted via-card to-background" />
       )}
 
       {/* Gradient overlay */}
@@ -50,10 +50,10 @@ export function EventHero({ event }: EventHeroProps) {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="flex flex-col gap-4"
           >
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
               {event.title}
             </h1>
-            <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+            <p className="max-w-2xl text-base text-foreground/70 sm:text-lg">
               {event.short_description}
             </p>
 

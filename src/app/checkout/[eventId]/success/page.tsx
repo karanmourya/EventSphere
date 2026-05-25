@@ -28,25 +28,29 @@ export default async function SuccessPage({
   return (
     <div className="mx-auto max-w-lg px-4 py-16 text-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="flex size-16 items-center justify-center rounded-full bg-green-500/10">
-          <CheckCircle className="size-8 text-green-500" />
+        <div className="flex size-16 items-center justify-center rounded-full bg-[var(--success)]/10">
+          <CheckCircle className="size-8 text-[var(--success)]" />
         </div>
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="text-2xl font-semibold tracking-tight text-[var(--ink)]">
           You are Registered!
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-[var(--body)]">
           Your tickets have been confirmed. Here is your QR ticket.
         </p>
 
         {order && (
-          <div className="w-full rounded-xl border bg-card p-5 text-left">
+          <div className="w-full rounded-xl border border-[var(--hairline)] bg-[var(--canvas)] p-5 text-left">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Order</span>
-              <span className="text-sm font-mono">{order.id.slice(0, 8)}</span>
+              <span className="text-sm text-[var(--muted-text)]">Order</span>
+              <span className="font-mono text-sm text-[var(--ink)]">
+                {order.id.slice(0, 8)}
+              </span>
             </div>
-            <div className="flex items-center justify-between border-t pt-2">
-              <span className="text-sm text-muted-foreground">Total Paid</span>
-              <span className="font-semibold">
+            <div className="flex items-center justify-between border-t border-[var(--hairline-soft)] pt-2">
+              <span className="text-sm text-[var(--muted-text)]">
+                Total Paid
+              </span>
+              <span className="font-semibold text-[var(--ink)]">
                 {formatPrice(order.total_amount)}
               </span>
             </div>
@@ -55,7 +59,7 @@ export default async function SuccessPage({
 
         {reg?.qr_code && event && (
           <div className="w-full">
-            <p className="mb-2 text-sm text-muted-foreground">
+            <p className="mb-2 text-sm text-[var(--body)]">
               Show this QR at the venue
             </p>
             <QRTicket

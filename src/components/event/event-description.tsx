@@ -15,7 +15,7 @@ export function EventDescription({ description }: EventDescriptionProps) {
       className="rounded-xl border bg-card p-6"
     >
       <h2 className="mb-4 text-lg font-semibold">About</h2>
-      <div className="prose prose-invert max-w-none text-muted-foreground">
+      <div className="prose max-w-none text-foreground/80">
         {description.split("\n").map((paragraph, i) => (
           <p key={i} className="leading-relaxed">
             {paragraph}
