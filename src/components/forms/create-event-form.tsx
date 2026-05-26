@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef } from "react";
 import { createEvent } from "@/actions/events";
 import { generateDescription } from "@/actions/ai";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,7 +23,7 @@ import {
   FieldError,
   FieldSeparator,
 } from "@/components/ui/field";
-import { Sparkles, Loader2 } from "lucide-react";
+import { Sparkles, Loader2, Upload, X, ImageIcon } from "lucide-react";
 import type { EventVisibility, RegistrationMode } from "@/types";
 
 interface Category {
@@ -39,6 +40,54 @@ export function CreateEventForm({ categories }: CreateEventFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleBannerUpload(file: File) {
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Image must be less than 5MB.");
+      return;
+    }
+    if (!file.type.startsWith("image/")) {
+      setError("Please upload an image file.");
+      return;
+    }
+
+    setIsUploading(true);
+    setError(null);
+
+    const supabase = createClient();
+    const ext = file.name.split(".").pop();
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+    const { data, error: uploadError } = await supabase.storage
+      .from("event-banners")
+      .upload(path, file);
+
+    setIsUploading(false);
+
+    if (uploadError) {
+      setError("Failed to upload image. Please try again.");
+      return;
+    }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("event-banners").getPublicUrl(data.path);
+
+    setBannerUrl(publicUrl);
+    setBannerPreview(publicUrl);
+  }
+
+  function handleRemoveBanner() {
+    setBannerUrl(null);
+    setBannerPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  }
 
   async function handleGenerateDescription() {
     if (!title.trim()) {
@@ -104,6 +153,7 @@ export function CreateEventForm({ categories }: CreateEventFormProps) {
         city: city || undefined,
         venue: venue || undefined,
         onlineLink: onlineLink || undefined,
+        bannerUrl: bannerUrl || undefined,
         visibility,
         registrationMode,
       });
@@ -144,6 +194,57 @@ export function CreateEventForm({ categories }: CreateEventFormProps) {
             />
             <FieldDescription>
               eventsphere.com/event/{slug || "your-event"}
+            </FieldDescription>
+          </Field>
+          <Field>
+            <FieldLabel>Banner Image</FieldLabel>
+            {bannerPreview ? (
+              <div className="relative overflow-hidden rounded-xl border">
+                <img
+                  src={bannerPreview}
+                  alt="Banner preview"
+                  className="aspect-[16/9] w-full object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveBanner}
+                  className="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+            ) : (
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-8 transition-colors hover:border-foreground/30 hover:bg-muted/50"
+              >
+                {isUploading ? (
+                  <Loader2 className="size-8 animate-spin text-muted-foreground" />
+                ) : (
+                  <ImageIcon className="size-8 text-muted-foreground/60" />
+                )}
+                <div className="text-center">
+                  <p className="text-sm font-medium">
+                    {isUploading ? "Uploading..." : "Click to upload banner"}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    PNG, JPG, WebP up to 5MB
+                  </p>
+                </div>
+              </div>
+            )}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleBannerUpload(file);
+              }}
+            />
+            <FieldDescription>
+              Recommended: 1200x675px (16:9 ratio)
             </FieldDescription>
           </Field>
           <Field>
@@ -336,7 +437,7 @@ export function CreateEventForm({ categories }: CreateEventFormProps) {
 
       {error && <FieldError>{error}</FieldError>}
 
-      <Button type="submit" size="lg" className="w-full" disabled={isPending}>
+      <Button type="submit" size="lg" className="w-full" disabled={isPending || isUploading}>
         {isPending ? "Creating..." : "Create Event"}
       </Button>
     </form>

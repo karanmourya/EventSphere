@@ -25,6 +25,7 @@ interface CreateEventInput {
   city?: string;
   venue?: string;
   onlineLink?: string;
+  bannerUrl?: string;
   visibility: EventVisibility;
   registrationMode: RegistrationMode;
 }
@@ -67,6 +68,7 @@ export async function createEvent(input: CreateEventInput) {
       slug,
       short_description: input.shortDescription,
       description: input.description || null,
+      banner_url: input.bannerUrl || null,
       category_id: input.categoryId || null,
       start_time: input.startTime,
       end_time: input.endTime,
