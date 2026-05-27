@@ -60,7 +60,7 @@ export async function createEvent(input: CreateEventInput) {
     return { error: "An event with this title already exists. Please choose a different title." };
   }
 
-  const { data: event, error } = await supabase
+  const { data: event, error } = await admin
     .from("events")
     .insert({
       organizer_id: user.id,
@@ -84,7 +84,8 @@ export async function createEvent(input: CreateEventInput) {
     .single();
 
   if (error) {
-    return { error: "Failed to create event. Please try again." };
+    console.error("Event creation error:", error.message, error.details, error.hint);
+    return { error: error.message || "Failed to create event. Please try again." };
   }
 
   revalidatePath("/dashboard/events");
