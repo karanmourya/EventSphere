@@ -348,3 +348,31 @@ create policy "Users can delete own reviews" on reviews for delete using (auth.u
 
 create index idx_reviews_event_id on reviews(event_id);
 create index idx_reviews_user_id on reviews(user_id);
+
+-- 14. REFUND REQUESTS
+create table refund_requests (
+  id uuid primary key default uuid_generate_v4(),
+  order_id uuid not null references orders(id) on delete cascade,
+  event_id uuid not null references events(id) on delete cascade,
+  user_id uuid not null references profiles(id) on delete cascade,
+  reason text not null,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
+  reviewed_by uuid references profiles(id) on delete set null,
+  reviewed_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+alter table refund_requests enable row level security;
+
+create policy "Users can view own refund requests" on refund_requests for select using (auth.uid() = user_id);
+create policy "Users can create refund requests" on refund_requests for insert with check (auth.uid() = user_id);
+create policy "Organizers can view event refund requests" on refund_requests for select using (
+  exists (select 1 from events where events.id = refund_requests.event_id and events.organizer_id = auth.uid())
+);
+create policy "Organizers can update refund requests" on refund_requests for update using (
+  exists (select 1 from events where events.id = refund_requests.event_id and events.organizer_id = auth.uid())
+);
+
+create index idx_refund_requests_order_id on refund_requests(order_id);
+create index idx_refund_requests_event_id on refund_requests(event_id);
+create index idx_refund_requests_user_id on refund_requests(user_id);

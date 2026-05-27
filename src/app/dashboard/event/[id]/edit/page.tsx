@@ -6,7 +6,7 @@ import { ScheduleBuilder } from "@/components/event/schedule-builder";
 import { DiscountManager } from "@/components/event/discount-manager";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { ClipboardList, ScanLine } from "lucide-react";
+import { ClipboardList, ScanLine, RotateCcw } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 interface EditEventPageProps {
@@ -34,6 +34,13 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
         >
           <ScanLine className="mr-1 size-4" />
           Check-in Panel
+        </Link>
+        <Link
+          href={`/dashboard/event/${id}/refunds`}
+          className={buttonVariants({ variant: "outline", size: "sm" })}
+        >
+          <RotateCcw className="mr-1 size-4" />
+          Refunds
         </Link>
         {event.registration_mode === "approval" && (
           <>
