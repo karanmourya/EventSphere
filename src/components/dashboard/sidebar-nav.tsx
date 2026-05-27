@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Ticket,
   ShoppingCart,
+  Heart,
 } from "lucide-react";
 import {
   Sidebar,
@@ -42,6 +43,11 @@ const navItems = [
     label: "Orders",
     href: "/dashboard/orders",
     icon: ShoppingCart,
+  },
+  {
+    label: "Wishlist",
+    href: "/dashboard/wishlist",
+    icon: Heart,
   },
 ];
 

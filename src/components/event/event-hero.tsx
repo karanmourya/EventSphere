@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import { CalendarDays, MapPin } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDateRange } from "@/utils/format";
+import { WishlistToggle } from "./wishlist-toggle";
 
 interface EventHeroProps {
   event: {
+    id: string;
     title: string;
     short_description: string;
     banner_url: string | null;
@@ -20,9 +22,10 @@ interface EventHeroProps {
       avatar_url: string | null;
     } | null;
   };
+  wishlisted?: boolean;
 }
 
-export function EventHero({ event }: EventHeroProps) {
+export function EventHero({ event, wishlisted = false }: EventHeroProps) {
   const location = [event.venue, event.city].filter(Boolean).join(", ");
 
   return (
@@ -40,6 +43,11 @@ export function EventHero({ event }: EventHeroProps) {
 
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+
+      {/* Wishlist button */}
+      <div className="absolute top-4 right-4 z-10">
+        <WishlistToggle eventId={event.id} initialWishlisted={wishlisted} size="md" />
+      </div>
 
       {/* Content */}
       <div className="absolute inset-0 flex items-end">

@@ -3,6 +3,7 @@ import {
   getExploreCategories,
   getExploreCities,
 } from "@/actions/explore";
+import { getWishlistStatuses } from "@/actions/wishlist";
 import { EventCard } from "@/components/event/event-card";
 import { ExploreFilters } from "@/components/event/explore-filters";
 import { RecommendedEvents } from "@/components/event/recommended-events";
@@ -31,6 +32,10 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
     getExploreCategories(),
     getExploreCities(),
   ]);
+
+  const wishlistStatuses = await getWishlistStatuses(
+    result.events.map((e) => e.id)
+  );
 
   const hasFilters = params.search || params.category || params.city || params.price;
 
@@ -66,7 +71,12 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
           </p>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {result.events.map((event, i) => (
-              <EventCard key={event.id} event={event} index={i} />
+              <EventCard
+                key={event.id}
+                event={event}
+                index={i}
+                wishlisted={wishlistStatuses[event.id] ?? false}
+              />
             ))}
           </div>
         </>

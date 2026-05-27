@@ -376,3 +376,21 @@ create policy "Organizers can update refund requests" on refund_requests for upd
 create index idx_refund_requests_order_id on refund_requests(order_id);
 create index idx_refund_requests_event_id on refund_requests(event_id);
 create index idx_refund_requests_user_id on refund_requests(user_id);
+
+-- 15. WISHLISTS
+create table wishlists (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid not null references profiles(id) on delete cascade,
+  event_id uuid not null references events(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  unique(user_id, event_id)
+);
+
+alter table wishlists enable row level security;
+
+create policy "Users can view own wishlists" on wishlists for select using (auth.uid() = user_id);
+create policy "Users can add to wishlist" on wishlists for insert with check (auth.uid() = user_id);
+create policy "Users can remove from wishlist" on wishlists for delete using (auth.uid() = user_id);
+
+create index idx_wishlists_user_id on wishlists(user_id);
+create index idx_wishlists_event_id on wishlists(event_id);

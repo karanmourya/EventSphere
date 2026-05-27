@@ -6,6 +6,7 @@ import { CalendarDays, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDate, formatPrice } from "@/utils/format";
+import { WishlistToggle } from "./wishlist-toggle";
 
 interface EventCardProps {
   event: {
@@ -25,9 +26,10 @@ interface EventCardProps {
     priceRange?: { min: number; max: number };
   };
   index?: number;
+  wishlisted?: boolean;
 }
 
-export function EventCard({ event, index = 0 }: EventCardProps) {
+export function EventCard({ event, index = 0, wishlisted = false }: EventCardProps) {
   const location = event.city;
   const priceRange = event.priceRange ?? { min: 0, max: 0 };
   const priceLabel =
@@ -69,11 +71,14 @@ export function EventCard({ event, index = 0 }: EventCardProps) {
             </Badge>
           )}
           <Badge
-            className="absolute top-3 right-3"
+            className="absolute top-3 right-12"
             variant={priceRange.min === 0 ? "secondary" : "default"}
           >
             {priceLabel}
           </Badge>
+          <div className="absolute top-2 right-2">
+            <WishlistToggle eventId={event.id} initialWishlisted={wishlisted} size="sm" />
+          </div>
         </div>
 
         {/* Content */}
