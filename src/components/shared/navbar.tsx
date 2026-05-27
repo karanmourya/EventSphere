@@ -1,10 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { NotificationBell } from "@/components/notifications/notification-bell";
-import { Menu, X } from "lucide-react";
+import { signOut, getAccount } from "@/actions/account";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Menu,
+  X,
+  Settings,
+  LogOut,
+  LayoutDashboard,
+  User,
+} from "lucide-react";
 
 interface NavbarProps {
   user: { id: string; email?: string } | null;
@@ -12,6 +21,32 @@ interface NavbarProps {
 
 export function Navbar({ user }: NavbarProps) {
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [profile, setProfile] = useState<{
+    name: string | null;
+    avatar_url: string | null;
+  } | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (user) {
+      getAccount().then((data) => {
+        if (data?.profile) {
+          setProfile({
+            name: data.profile.name,
+            avatar_url: data.profile.avatar_url,
+          });
+        }
+      });
+    }
+  }, [user]);
+
+  function handleSignOut() {
+    setMenuOpen(false);
+    startTransition(async () => {
+      await signOut();
+    });
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
@@ -42,6 +77,69 @@ export function Navbar({ user }: NavbarProps) {
               >
                 Dashboard
               </Link>
+              {/* User avatar dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  className="rounded-full transition-opacity hover:opacity-80"
+                >
+                  <Avatar className="size-8">
+                    <AvatarImage src={profile?.avatar_url ?? undefined} />
+                    <AvatarFallback className="text-xs">
+                      {profile?.name?.charAt(0).toUpperCase() ?? "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
+                {menuOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setMenuOpen(false)}
+                    />
+                    <div className="absolute right-0 top-12 z-50 w-48 rounded-lg border bg-background shadow-lg">
+                      <div className="border-b p-3">
+                        <p className="truncate text-sm font-medium">
+                          {profile?.name ?? "User"}
+                        </p>
+                      </div>
+                      <div className="p-1">
+                        <Link
+                          href="/dashboard/settings"
+                          onClick={() => setMenuOpen(false)}
+                          className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                        >
+                          <User className="size-4" />
+                          Account
+                        </Link>
+                        <Link
+                          href="/dashboard"
+                          onClick={() => setMenuOpen(false)}
+                          className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                        >
+                          <LayoutDashboard className="size-4" />
+                          Dashboard
+                        </Link>
+                        <Link
+                          href="/dashboard/settings"
+                          onClick={() => setMenuOpen(false)}
+                          className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                        >
+                          <Settings className="size-4" />
+                          Settings
+                        </Link>
+                        <button
+                          onClick={handleSignOut}
+                          disabled={isPending}
+                          className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-950"
+                        >
+                          <LogOut className="size-4" />
+                          {isPending ? "Signing out..." : "Sign Out"}
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
             </>
           ) : (
             <>
@@ -88,9 +186,19 @@ export function Navbar({ user }: NavbarProps) {
                 >
                   Dashboard
                 </Link>
-                <div className="px-3 py-2">
-                  <NotificationBell />
-                </div>
+                <Link
+                  href="/dashboard/settings"
+                  className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-foreground"
+                  onClick={() => setOpen(false)}
+                >
+                  Account
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="rounded-md px-3 py-2 text-left text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+                >
+                  Sign Out
+                </button>
               </>
             ) : (
               <>

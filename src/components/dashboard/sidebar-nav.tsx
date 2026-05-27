@@ -8,6 +8,7 @@ import {
   Ticket,
   ShoppingCart,
   Heart,
+  Settings,
 } from "lucide-react";
 import {
   Sidebar,
@@ -48,6 +49,11 @@ const navItems = [
     label: "Wishlist",
     href: "/dashboard/wishlist",
     icon: Heart,
+  },
+  {
+    label: "Settings",
+    href: "/dashboard/settings",
+    icon: Settings,
   },
 ];
 
