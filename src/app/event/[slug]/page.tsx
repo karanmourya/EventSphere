@@ -5,6 +5,7 @@ import { EventInfo } from "@/components/event/event-info";
 import { EventDescription } from "@/components/event/event-description";
 import { EventSidebar } from "@/components/event/event-sidebar";
 import { EventAgenda } from "@/components/event/event-agenda";
+import { EventReviews } from "@/components/event/event-reviews";
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
@@ -29,6 +30,7 @@ export default async function EventPage({ params }: EventPageProps) {
               <EventDescription description={event.description} />
             )}
             <EventAgenda eventId={event.id} />
+            <EventReviews eventId={event.id} eventSlug={event.slug} />
           </div>
           <div className="lg:col-span-1">
             <div className="sticky top-24">

@@ -327,3 +327,24 @@ create policy "Organizers can manage discount codes" on discount_codes for all u
 
 create index idx_discount_codes_event_id on discount_codes(event_id);
 create index idx_discount_codes_code on discount_codes(code);
+
+-- 13. REVIEWS
+create table reviews (
+  id uuid primary key default uuid_generate_v4(),
+  event_id uuid not null references events(id) on delete cascade,
+  user_id uuid not null references profiles(id) on delete cascade,
+  rating int not null check (rating >= 1 and rating <= 5),
+  comment text,
+  created_at timestamptz not null default now(),
+  unique(event_id, user_id)
+);
+
+alter table reviews enable row level security;
+
+create policy "Anyone can read reviews" on reviews for select using (true);
+create policy "Authenticated users can create reviews" on reviews for insert with check (auth.uid() = user_id);
+create policy "Users can update own reviews" on reviews for update using (auth.uid() = user_id);
+create policy "Users can delete own reviews" on reviews for delete using (auth.uid() = user_id);
+
+create index idx_reviews_event_id on reviews(event_id);
+create index idx_reviews_user_id on reviews(user_id);
