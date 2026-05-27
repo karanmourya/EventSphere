@@ -41,11 +41,20 @@ export async function createEvent(input: CreateEventInput) {
     return { error: "You must be logged in to create an event." };
   }
 
-  // Auto-upgrade role to organizer
-  await admin
+  // Ensure profile exists and upgrade role to organizer
+  const { error: profileError } = await admin
     .from("profiles")
-    .update({ role: "organizer" })
-    .eq("id", user.id);
+    .upsert({
+      id: user.id,
+      name: user.user_metadata?.name || user.email?.split("@")[0] || "User",
+      username: user.user_metadata?.username || user.email?.split("@")[0] || "user",
+      role: "organizer",
+    }, { onConflict: "id" });
+
+  if (profileError) {
+    console.error("Profile upsert error:", profileError.message);
+    return { error: "Failed to set up your profile. Please try again." };
+  }
 
   const slug = generateSlug(input.title);
 
