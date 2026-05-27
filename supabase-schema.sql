@@ -108,6 +108,8 @@ create table orders (
   user_id uuid not null references profiles(id) on delete cascade,
   event_id uuid not null references events(id) on delete cascade,
   total_amount numeric not null default 0,
+  discount_code_id uuid references discount_codes(id) on delete set null,
+  discount_amount numeric not null default 0,
   payment_status text not null default 'pending' check (payment_status in ('pending', 'completed', 'failed', 'refunded')),
   payment_id text,
   created_at timestamptz not null default now()
@@ -301,3 +303,27 @@ create policy "Organizers can create checkins" on checkins for insert with check
 
 create index idx_checkins_event_id on checkins(event_id);
 create index idx_checkins_registration_id on checkins(registration_id);
+
+-- 12. DISCOUNT CODES
+create table discount_codes (
+  id uuid primary key default uuid_generate_v4(),
+  event_id uuid not null references events(id) on delete cascade,
+  code text not null,
+  type text not null check (type in ('percentage', 'fixed')),
+  value numeric not null check (value > 0),
+  max_uses int,
+  current_uses int not null default 0,
+  expires_at timestamptz,
+  created_at timestamptz not null default now(),
+  unique(event_id, code)
+);
+
+alter table discount_codes enable row level security;
+
+create policy "Anyone can read active discount codes" on discount_codes for select using (true);
+create policy "Organizers can manage discount codes" on discount_codes for all using (
+  exists (select 1 from events where events.id = discount_codes.event_id and events.organizer_id = auth.uid())
+);
+
+create index idx_discount_codes_event_id on discount_codes(event_id);
+create index idx_discount_codes_code on discount_codes(code);

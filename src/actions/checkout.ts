@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getDiscountForCheckout } from "@/actions/discount-codes";
 
 interface TicketSelection {
   ticketId: string;
@@ -12,7 +13,8 @@ interface TicketSelection {
 
 export async function createOrder(
   eventId: string,
-  selections: TicketSelection[]
+  selections: TicketSelection[],
+  discountCode?: string
 ) {
   const supabase = await createClient();
   const {
@@ -59,10 +61,32 @@ export async function createOrder(
   }
 
   // Calculate total
-  const totalAmount = validSelections.reduce((sum, sel) => {
+  let totalAmount = validSelections.reduce((sum, sel) => {
     const ticket = tickets.find((t) => t.id === sel.ticketId)!;
     return sum + ticket.price * sel.quantity;
   }, 0);
+
+  // Apply discount code if provided
+  let discountId: string | null = null;
+  let discountAmount = 0;
+  if (discountCode) {
+    const discount = await getDiscountForCheckout(eventId, discountCode);
+    if (discount) {
+      discountId = discount.id;
+      if (discount.type === "percentage") {
+        discountAmount = Math.round(totalAmount * (discount.value / 100));
+      } else {
+        discountAmount = Math.min(discount.value, totalAmount);
+      }
+      totalAmount = Math.max(0, totalAmount - discountAmount);
+      // Increment usage count
+      const admin = createAdminClient();
+      await admin
+        .from("discount_codes")
+        .update({ current_uses: discount.current_uses + 1 })
+        .eq("id", discount.id);
+    }
+  }
 
   // Determine if this is free (all tickets free)
   const isFree = totalAmount === 0;
@@ -74,8 +98,10 @@ export async function createOrder(
       user_id: user.id,
       event_id: eventId,
       total_amount: totalAmount,
-      payment_status: isFree ? "completed" : "completed",
-      payment_id: isFree ? null : `fake_${Date.now()}`,
+      discount_code_id: discountId,
+      discount_amount: discountAmount,
+      payment_status: "completed",
+      payment_id: totalAmount === 0 ? null : `fake_${Date.now()}`,
     })
     .select("id")
     .single();

@@ -3,6 +3,7 @@ import { getEventById, getEventTickets } from "@/actions/tickets";
 import { EventEditHeader } from "@/components/event/event-edit-header";
 import { TicketManager } from "@/components/event/ticket-manager";
 import { ScheduleBuilder } from "@/components/event/schedule-builder";
+import { DiscountManager } from "@/components/event/discount-manager";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { ClipboardList, ScanLine } from "lucide-react";
@@ -66,6 +67,10 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
         description={event.description ?? undefined}
         category={event.categories?.name}
       />
+
+      <Separator className="my-8" />
+
+      <DiscountManager eventId={event.id} />
     </div>
   );
 }
