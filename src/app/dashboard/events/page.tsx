@@ -1,12 +1,31 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getDashboardEvents } from "@/actions/events";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus } from "lucide-react";
+import { Plus, TrendingUp, Loader2 } from "lucide-react";
 import { formatDate } from "@/utils/format";
 
-export default async function DashboardEventsPage() {
-  const events = await getDashboardEvents();
+export default function DashboardEventsPage() {
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getDashboardEvents().then((data) => {
+      setEvents(data);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="size-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -45,12 +64,14 @@ export default async function DashboardEventsPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {events.map((event) => (
-            <Link
+            <div
               key={event.id}
-              href={`/dashboard/event/${event.id}/edit`}
               className="flex items-center justify-between rounded-xl border border-[var(--hairline)] bg-[var(--canvas)] p-4 transition-colors hover:bg-[var(--surface-card)]"
             >
-              <div className="flex flex-col gap-1">
+              <Link
+                href={`/dashboard/event/${event.id}/edit`}
+                className="flex flex-1 flex-col gap-1"
+              >
                 <div className="flex items-center gap-2">
                   <h3 className="font-medium text-[var(--ink)]">
                     {event.title}
@@ -67,11 +88,20 @@ export default async function DashboardEventsPage() {
                   {formatDate(event.start_time, event.timezone)}
                   {event.categories?.name && ` · ${event.categories.name}`}
                 </p>
+              </Link>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/dashboard/event/${event.id}/stats`}
+                  className={buttonVariants({ variant: "ghost", size: "sm" })}
+                >
+                  <TrendingUp className="mr-1 size-4" />
+                  Stats
+                </Link>
+                <span className="text-sm text-[var(--muted-text)]">
+                  /event/{event.slug}
+                </span>
               </div>
-              <span className="text-sm text-[var(--muted-text)]">
-                /event/{event.slug}
-              </span>
-            </Link>
+            </div>
           ))}
         </div>
       )}
