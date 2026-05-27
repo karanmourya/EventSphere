@@ -5,7 +5,7 @@ import { TicketManager } from "@/components/event/ticket-manager";
 import { ScheduleBuilder } from "@/components/event/schedule-builder";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { ClipboardList } from "lucide-react";
+import { ClipboardList, ScanLine } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 interface EditEventPageProps {
@@ -26,24 +26,33 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
     <div className="mx-auto max-w-3xl">
       <EventEditHeader event={event} />
 
-      {event.registration_mode === "approval" && (
-        <div className="mb-6 flex gap-2">
-          <Link
-            href={`/dashboard/event/${id}/forms`}
-            className={buttonVariants({ variant: "outline", size: "sm" })}
-          >
-            <ClipboardList className="mr-1 size-4" />
-            Edit Application Form
-          </Link>
-          <Link
-            href={`/dashboard/event/${id}/applications`}
-            className={buttonVariants({ variant: "outline", size: "sm" })}
-          >
-            <ClipboardList className="mr-1 size-4" />
-            View Applications
-          </Link>
-        </div>
-      )}
+      <div className="mb-6 flex gap-2">
+        <Link
+          href={`/dashboard/event/${id}/checkin`}
+          className={buttonVariants({ variant: "outline", size: "sm" })}
+        >
+          <ScanLine className="mr-1 size-4" />
+          Check-in Panel
+        </Link>
+        {event.registration_mode === "approval" && (
+          <>
+            <Link
+              href={`/dashboard/event/${id}/forms`}
+              className={buttonVariants({ variant: "outline", size: "sm" })}
+            >
+              <ClipboardList className="mr-1 size-4" />
+              Edit Application Form
+            </Link>
+            <Link
+              href={`/dashboard/event/${id}/applications`}
+              className={buttonVariants({ variant: "outline", size: "sm" })}
+            >
+              <ClipboardList className="mr-1 size-4" />
+              View Applications
+            </Link>
+          </>
+        )}
+      </div>
 
       <TicketManager eventId={event.id} tickets={tickets} />
 

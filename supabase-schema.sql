@@ -279,3 +279,25 @@ create policy "Service role can insert notifications" on notifications for inser
 
 create index idx_notifications_user_id on notifications(user_id);
 create index idx_notifications_user_read on notifications(user_id, read);
+
+-- 11. CHECKINS (audit log for check-ins)
+create table checkins (
+  id uuid primary key default uuid_generate_v4(),
+  registration_id uuid not null references registrations(id) on delete cascade,
+  event_id uuid not null references events(id) on delete cascade,
+  checked_in_by uuid not null references profiles(id) on delete cascade,
+  method text not null default 'manual' check (method in ('qr', 'manual')),
+  checked_in_at timestamptz not null default now()
+);
+
+alter table checkins enable row level security;
+
+create policy "Organizers can view event checkins" on checkins for select using (
+  exists (select 1 from events where events.id = checkins.event_id and events.organizer_id = auth.uid())
+);
+create policy "Organizers can create checkins" on checkins for insert with check (
+  exists (select 1 from events where events.id = checkins.event_id and events.organizer_id = auth.uid())
+);
+
+create index idx_checkins_event_id on checkins(event_id);
+create index idx_checkins_registration_id on checkins(registration_id);
