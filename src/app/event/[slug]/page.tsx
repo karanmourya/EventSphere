@@ -7,6 +7,9 @@ import { EventDescription } from "@/components/event/event-description";
 import { EventSidebar } from "@/components/event/event-sidebar";
 import { EventAgenda } from "@/components/event/event-agenda";
 import { EventReviews } from "@/components/event/event-reviews";
+import { EventSpeakers } from "@/components/event/event-speakers";
+import { EventMap } from "@/components/event/event-map";
+import { EventFAQ } from "@/components/event/event-faq";
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
@@ -32,12 +35,15 @@ export default async function EventPage({ params }: EventPageProps) {
             {event.description && (
               <EventDescription description={event.description} />
             )}
+            <EventSpeakers eventId={event.id} />
             <EventAgenda eventId={event.id} />
+            <EventFAQ eventId={event.id} />
             <EventReviews eventId={event.id} eventSlug={event.slug} />
           </div>
           <div className="lg:col-span-1">
-            <div className="sticky top-24">
+            <div className="flex flex-col gap-6 sticky top-24">
               <EventSidebar event={event} />
+              <EventMap venue={event.venue} city={event.city} />
             </div>
           </div>
         </div>

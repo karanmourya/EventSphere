@@ -394,3 +394,43 @@ create policy "Users can remove from wishlist" on wishlists for delete using (au
 
 create index idx_wishlists_user_id on wishlists(user_id);
 create index idx_wishlists_event_id on wishlists(event_id);
+
+-- 16. SPEAKERS
+create table speakers (
+  id uuid primary key default uuid_generate_v4(),
+  event_id uuid not null references events(id) on delete cascade,
+  name text not null,
+  title text,
+  company text,
+  bio text,
+  avatar_url text,
+  linkedin_url text,
+  sort_order int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+alter table speakers enable row level security;
+create policy "Anyone can read speakers" on speakers for select using (true);
+create policy "Organizers can manage speakers" on speakers for all using (
+  exists (select 1 from events where events.id = speakers.event_id and events.organizer_id = auth.uid())
+);
+
+create index idx_speakers_event_id on speakers(event_id);
+
+-- 17. FAQS
+create table event_faqs (
+  id uuid primary key default uuid_generate_v4(),
+  event_id uuid not null references events(id) on delete cascade,
+  question text not null,
+  answer text not null,
+  sort_order int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+alter table event_faqs enable row level security;
+create policy "Anyone can read FAQs" on event_faqs for select using (true);
+create policy "Organizers can manage FAQs" on event_faqs for all using (
+  exists (select 1 from events where events.id = event_faqs.event_id and events.organizer_id = auth.uid())
+);
+
+create index idx_event_faqs_event_id on event_faqs(event_id);
