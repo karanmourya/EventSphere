@@ -159,7 +159,7 @@ Log in with either account to explore both sides of the platform:
 
 | Account | Password | Best for testing |
 |---------|----------|-----------------|
-| `mytypihi@denipl.co` | `mytypihi@denipl.com` | Creating events, managing check-ins, viewing revenue |
+| `mytypihi@denipl.com` | `mytypihi@denipl.com` | Creating events, managing check-ins, viewing revenue |
 | `kaghed4gox@disefl.com` | `kaghed4gox@disefl.com` | Browsing events, purchasing tickets, leaving reviews |
 
 ---
